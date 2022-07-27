@@ -1,9 +1,8 @@
-import { Injectable } from '@angular/core';
-import { Subject } from 'rxjs/Subject';
+import { Injectable } from "@angular/core";
+import { Subject } from "rxjs";
 
-import { Recipe } from './recipe.model';
-import { Ingredient } from '../shared/ingredient.model';
-
+import { Recipe } from "./recipe.model";
+import { Ingredient } from "../shared/ingredient.model";
 
 @Injectable()
 export class RecipeService {

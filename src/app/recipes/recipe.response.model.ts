@@ -1,10 +1,7 @@
-
-import {Recipe} from './recipe.model';
+import { Recipe } from "./recipe.model";
 
 export class RecipesResponse {
-
-  public code: string ;
-  public description: string;
-  public recipes: Recipe[];
-
+  public code!: string;
+  public description!: string;
+  public recipes: Recipe[] = [];
 }
