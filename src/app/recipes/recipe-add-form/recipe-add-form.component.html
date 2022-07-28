@@ -1,0 +1,67 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-flex justify-content-center">
+      <div class="col col-sm-12 col-md-8 mt-5">
+        <h2 class="text-center">Agregar Receta</h2>
+        <form (ngSubmit)="onSubmit()" [formGroup]="addRecipeForm">
+            
+            <!-- Value: {{ addRecipeForm.value | json }}
+            Value: {{ ingredientForms.value.length | json }} -->
+
+            <div class="mb-3">
+              <label for="nameRecipe" class="form-label">Nombre Receta</label>
+              <input type="text" id="nameRecipe" class="form-control" formControlName="nameRecipe" placeholder="Nombre de receta" />
+              <div *ngIf="recipeForms['nameRecipe'].invalid && recipeForms['nameRecipe'].touched" class="text-danger">
+                <small> * Necesita ingresar nombre de receta </small>
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <label for="description" class="form-label">Descripción</label>
+              <textarea class="form-control" id="description" formControlName="description" placeholder="Descripción de la receta" rows="3"></textarea>
+              <div *ngIf="recipeForms['description'].invalid && recipeForms['description'].touched" class="text-danger">
+                <small> * Necesita ingresar una descripcion </small>
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <label for="imagePath" class="form-label">Imagen url</label>
+              <input type="text" class="form-control" formControlName="imagePath" placeholder="URL de imagen receta"/>
+              <div *ngIf="recipeForms['imagePath'].invalid && recipeForms['imagePath'].touched" class="text-danger">
+                <small> * Necesita ingresar URL de la imagen </small>
+              </div>
+            </div>
+
+
+            <div formArrayName="ingredients" class="text-center">
+
+              <h3 class="py-3">Ingredientes</h3>
+              <div *ngFor="let ingredient of ingredientForms.controls; let i=index" [formGroupName]="i">
+                <div class="mb-3">
+                  <div class="row g-3 align-items-center justify-content-center">
+                    <div class="col-auto">
+                      <input type="text" class="form-control" formControlName="nameIngredient" placeholder="Ingrediente"/>
+                    </div>
+                    <div class="col-auto">
+                      <input type="number" class="form-control" formControlName="amount" placeholder="Cantidad" />
+                    </div>
+                    <div class="col-auto">
+                      <button class="btn btn-sm btn-danger" (click)="deleteIngredient(i)"> X </button>
+                    </div>
+                  </div>
+                  <hr/>
+                </div>
+              </div>
+              <button type="button" class="btn btn-outline-secondary" (click)="addIngredient()"> + Ingrediente </button>
+            </div>
+
+
+            <div class="d-grid gap-2 d-md-flex justify-content-md-end pt-5">
+              <button class="btn btn-success" type="submit" [disabled]="addRecipeForm.invalid || ingredientForms.invalid">Guardar</button>
+              <button class="btn btn-secondary" type="reset" (click)="onReset()">Cancel</button>
+            </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>  

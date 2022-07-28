@@ -33,6 +33,11 @@ export class RecipeListComponent implements OnInit, OnDestroy {
     this.dataSourceService.getRecipes();
   }
 
+  showFormRecipe() {
+    console.log("Mostrando Formulario receta");
+    this.router.navigate(["add-recipe"]);
+  }
+
   ngOnDestroy() {
     this.subscription.unsubscribe();
   }

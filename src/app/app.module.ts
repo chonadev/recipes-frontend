@@ -1,6 +1,6 @@
 import { BrowserModule } from "@angular/platform-browser";
 import { NgModule } from "@angular/core";
-import { FormsModule, ReactiveFormsModule } from "@angular/forms";
+import { ReactiveFormsModule } from "@angular/forms";
 import { HttpClientModule } from "@angular/common/http";
 
 import { AppComponent } from "./app.component";
@@ -15,6 +15,7 @@ import { AppRoutingModule } from "./app-routing.module";
 import { RecipeStartComponent } from "./recipes/recipe-start/recipe-start.component";
 import { RecipeService } from "./recipes/recipe.service";
 import { DataStorageService } from "./shared/data-storage.service";
+import { RecipeAddFormComponent } from './recipes/recipe-add-form/recipe-add-form.component';
 
 @NgModule({
   declarations: [
@@ -26,10 +27,10 @@ import { DataStorageService } from "./shared/data-storage.service";
     RecipeItemComponent,
     DropdownDirective,
     RecipeStartComponent,
+    RecipeAddFormComponent,
   ],
   imports: [
     BrowserModule,
-    FormsModule,
     ReactiveFormsModule,
     HttpClientModule,
     AppRoutingModule,
