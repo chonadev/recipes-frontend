@@ -1,3 +1,4 @@
+import { IngrediantResponse } from './../ingredients/ingrediant.response.model';
 import { Injectable } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
 import { RecipeService } from "../recipes/recipe.service";
@@ -24,5 +25,10 @@ export class DataStorageService {
   saveRecipe(newRecipe: Recipe) : Observable<RecipesResponse> {
     return this.http
       .post<RecipesResponse>(`${this.API_URL}/recipe`, newRecipe);
+  }
+
+  getIngredients() {
+    return this.http
+      .get<IngrediantResponse>(`${this.API_URL}/ingredient/all`);
   }
 }

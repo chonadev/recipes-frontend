@@ -38,6 +38,11 @@ export class RecipeListComponent implements OnInit, OnDestroy {
     this.router.navigate(["add-recipe"]);
   }
 
+  showAllIngredients() {
+    console.log("Mostrando Formulario receta");
+    this.router.navigate(["recipes/ingredients"]);
+  }
+
   ngOnDestroy() {
     this.subscription.unsubscribe();
   }

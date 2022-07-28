@@ -16,6 +16,7 @@ import { RecipeStartComponent } from "./recipes/recipe-start/recipe-start.compon
 import { RecipeService } from "./recipes/recipe.service";
 import { DataStorageService } from "./shared/data-storage.service";
 import { RecipeAddFormComponent } from './recipes/recipe-add-form/recipe-add-form.component';
+import { IngredientListComponent } from './ingredients/ingredient-list/ingredient-list.component';
 
 @NgModule({
   declarations: [
@@ -28,6 +29,7 @@ import { RecipeAddFormComponent } from './recipes/recipe-add-form/recipe-add-for
     DropdownDirective,
     RecipeStartComponent,
     RecipeAddFormComponent,
+    IngredientListComponent,
   ],
   imports: [
     BrowserModule,

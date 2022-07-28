@@ -1,3 +1,4 @@
+import { IngredientListComponent } from './ingredients/ingredient-list/ingredient-list.component';
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
@@ -10,6 +11,7 @@ import { RecipeAddFormComponent } from './recipes/recipe-add-form/recipe-add-for
 const appRoutes: Routes = [
   { path: '', redirectTo: '/recipes', pathMatch: 'full' },
   { path: 'recipes', component: RecipesComponent, children: [
+    { path: 'ingredients', component: IngredientListComponent },
     { path: ':id', component: RecipeDetailComponent },
     { path: '', component: RecipeStartComponent },
   ]},
