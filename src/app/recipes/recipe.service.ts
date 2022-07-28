@@ -3,11 +3,17 @@ import { Subject } from "rxjs";
 
 import { Recipe } from "./recipe.model";
 
+export interface RecipeToEdit {
+  "id": number,
+  "recipe": Recipe,
+}
+
 @Injectable()
 export class RecipeService {
   recipesChanged = new Subject<Recipe[]>();
 
   private recipes: Recipe[] = [];
+  private recipeToEdit!: RecipeToEdit;
 
   constructor() {}
 
@@ -24,8 +30,23 @@ export class RecipeService {
     return this.recipes[index];
   }
 
+  getRecipeToEdit() {
+    return this.recipeToEdit;
+  }
+
   deleteRecipe(index: number) {
     this.recipes.splice(index, 1);
     this.recipesChanged.next(this.recipes.slice());
+  }
+
+  setRecipeToEdit(id: number, recipe: Recipe) {
+    this.recipeToEdit = {
+      id,
+      recipe
+    };
+  }
+
+  resetRecipeToEdit() {
+    this.recipeToEdit = {} as RecipeToEdit;
   }
 }

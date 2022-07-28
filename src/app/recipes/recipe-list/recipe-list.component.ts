@@ -31,6 +31,7 @@ export class RecipeListComponent implements OnInit, OnDestroy {
     this.recipes = this.recipeService.getRecipes();
 
     this.dataSourceService.getRecipes();
+    this.recipeService.resetRecipeToEdit();
   }
 
   showFormRecipe() {
