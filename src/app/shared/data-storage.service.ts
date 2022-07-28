@@ -27,6 +27,15 @@ export class DataStorageService {
       .post<RecipesResponse>(`${this.API_URL}/recipe`, newRecipe);
   }
 
+  updateRecipe(updateRecipe: Recipe, id: number): Observable<RecipesResponse> {
+    return this.http.put<RecipesResponse>(`${this.API_URL}/recipe/${id}`, updateRecipe);
+  }
+
+  deleteRecipe(id: number) {
+    this.http.delete<RecipesResponse>(`${this.API_URL}/recipe/${id}`).subscribe((response: RecipesResponse) => {
+      console.log("Delete status", response);
+    });
+  }
   getIngredients() {
     return this.http
       .get<IngrediantResponse>(`${this.API_URL}/ingredient/all`);

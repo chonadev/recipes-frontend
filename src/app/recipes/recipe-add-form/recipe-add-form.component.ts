@@ -1,3 +1,4 @@
+import { RecipeService, RecipeToEdit } from './../recipe.service';
 import { Ingredient } from './../../shared/ingredient.model';
 import { Recipe } from './../recipe.model';
 import { Component, OnInit } from '@angular/core';
@@ -16,25 +17,51 @@ export class RecipeAddFormComponent implements OnInit {
 
   addRecipeForm!: FormGroup;
   addIngredientForm!: FormGroup;
-
   submitted = false;
+
+  isEdit = false;
+  recipeToEdit!: RecipeToEdit
+  titlePage: string = "";
 
   constructor(
     private fb: FormBuilder, 
     private router: Router, 
-    public dataStorage: DataStorageService) { }
+    public dataStorage: DataStorageService,
+    public recipeService: RecipeService) { }
 
   ngOnInit(): void {
-    this.addRecipeForm = this.fb.group({
-      nameRecipe: ['', [
-        Validators.required,
-      ]],
-      description: ['',  Validators.required],
-      imagePath: ['', Validators.required],
-      ingredients: this.fb.array([])
-    });
+    // forms
+    this.loadUpdateForm();
+    this.loadAddForm();
 
-    this.addIngredient();
+    this.recipeToEdit = this.recipeService.getRecipeToEdit();
+
+    console.log(this.recipeToEdit);
+    
+    if (this.recipeToEdit && this.recipeToEdit.recipe) {
+      this.isEdit = true;
+      this.titlePage = "Editar Receta";
+      
+      const recipeSelected = this.recipeToEdit.recipe;
+      
+      this.addRecipeForm.controls['nameRecipe'].setValue(recipeSelected.name);
+      this.addRecipeForm.controls['description'].setValue(recipeSelected.description);
+      this.addRecipeForm.controls['imagePath'].setValue(recipeSelected.imagePath);
+      this.populateIngredientsForm(recipeSelected.ingredients);
+
+    } else {
+      this.titlePage = "Agregar Receta";
+    }
+  }
+
+  populateIngredientsForm(ingredients: Ingredient[]) {
+    ingredients.map((ingredient: Ingredient) => {
+      const newIngredientForm = this.fb.group({
+        nameIngredient: ingredient.name,
+        amount: ingredient.amount,
+      });
+      this.ingredientForms.push(newIngredientForm)
+    });
   }
 
   get recipeForms() {
@@ -45,17 +72,37 @@ export class RecipeAddFormComponent implements OnInit {
     return this.addRecipeForm.get('ingredients') as FormArray
   }
   
-  addIngredient() {
-    const ingredientForm = this.fb.group({
+  loadIngredientForm() {
+    this.addIngredientForm = this.fb.group({
       nameIngredient: ['', Validators.required],
       amount: ['', Validators.required]
     });
+  }
 
-    this.ingredientForms.push(ingredientForm);
+  addIngredient() {
+    const newIngredientForm = this.fb.group({
+      nameIngredient: ['', Validators.required],
+      amount: ['', Validators.required]
+    });
+    this.ingredientForms.push(newIngredientForm);
   }
 
   deleteIngredient(i: number) {
     this.ingredientForms.removeAt(i);
+  }
+
+  loadAddForm() {
+    this.addRecipeForm = this.fb.group({
+      nameRecipe: ['', [
+        Validators.required,
+      ]],
+      description: ['',  Validators.required],
+      imagePath: ['', Validators.required],
+      ingredients: this.fb.array([])
+    });
+  }
+
+  loadUpdateForm() {
   }
 
   onSubmit() {
@@ -66,12 +113,13 @@ export class RecipeAddFormComponent implements OnInit {
         'error',
       )
     }
-
-    this.submitted = true;
     
     if (this.addRecipeForm.invalid) {
       return;
     }
+
+    this.submitted = true;
+    
     const ingredients: Ingredient[] = this.ingredientForms.value.map( (ingre: any) => {
       return { 
         name: ingre.nameIngredient,
@@ -90,23 +138,43 @@ export class RecipeAddFormComponent implements OnInit {
 
     this.showLoading();
 
-    this.dataStorage.saveRecipe(newRecipe).subscribe((response: RecipesResponse) => {
-      if (response.code === '201') {
-        Swal.fire(
-          'Correcto!',
-          'Se guardo el ingrediente exitosamente!',
-          'success'
-        )
-      } else {
-        Swal.fire(
-          'Errror!',
-          'No se pudo guardar la receta, intente nuevamente.',
-          'error'
-        )
-      }
-      this.hideLaoding();
-      this.onReset();
-    });
+    if (this.isEdit) {
+      this.dataStorage.updateRecipe(newRecipe, this.recipeToEdit.id).subscribe((response: RecipesResponse) => {
+        if (response.code === '200') {
+          Swal.fire(
+            'Correcto!',
+            'Se Actualizo el ingrediente exitosamente!',
+            'success'
+          )
+        } else {
+          Swal.fire(
+            'Errror!',
+            'No se pudo actualizar la receta, intente nuevamente.',
+            'error'
+          )
+        }
+        this.hideLaoding();
+        this.onReset();
+      });
+    } else {
+      this.dataStorage.saveRecipe(newRecipe).subscribe((response: RecipesResponse) => {
+        if (response.code === '201') {
+          Swal.fire(
+            'Correcto!',
+            'Se guardo el ingrediente exitosamente!',
+            'success'
+          )
+        } else {
+          Swal.fire(
+            'Errror!',
+            'No se pudo guardar la receta, intente nuevamente.',
+            'error'
+          )
+        }
+        this.hideLaoding();
+        this.onReset();
+      });
+    }
   }
 
   onReset() {

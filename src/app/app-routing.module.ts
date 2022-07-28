@@ -16,6 +16,7 @@ const appRoutes: Routes = [
     { path: '', component: RecipeStartComponent },
   ]},
   { path: 'add-recipe', component: RecipeAddFormComponent },
+  { path: 'edit-recipe', component: RecipeAddFormComponent },
 ];
 
 @NgModule({
